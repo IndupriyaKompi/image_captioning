@@ -15,6 +15,6 @@ and
 
 b. Machine Translation: to turn these features into words in the right order
 
-The propsed model is a typical encode-decoder model. You'll see CNN as an image “encoder”, by first pre-training it for an image classification task and using the last hidden layer as an input to the RNN decoder that generates sentences (see Fig. 1). We call this model the Neural Image Caption, or NIC.
+The propsed model is a typical encode-decoder model. You'll see CNN as an image “encoder”, by first pre-training it for an image classification task and using the last hidden layer as an input to the RNN decoder that generates sentences (see Fig. 1). We call this model the Neural Image Caption, or NIC
 Click [here](https://arxiv.org/pdf/1411.4555.pdf) to dive in.
 
