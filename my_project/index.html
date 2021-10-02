@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>GloVe: Global Vectors for Word Representation</title>
+	<meta name="author" content="Jeffrey Pennington" />
+	<meta name="description" content="GloVe: Global Vectors for Word Representation" />
+	<meta name="keywords" content="jeffrey pennington, jeff pennington, pennington, jpennin, jspennin, glove: global vectors for word representation, word representations, global vectors for word representation, word vectors, machine learning, deep learning, natural language processing, nlp, computational linguistics, emnlp, emnlp2014, stanford university, stanford, sail, cs" />
+<link rel="stylesheet" type="text/css" href="css/screen.css" />
+<link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53449327-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+	<div id="OuterCanvas">
+		<div id="InnerCanvas">
+			<div id="Page">
+				
+				<div class="title">
+				<span class="name">GloVe: Global Vectors for Word Representation</span>
+				<span> <a class="pubauthor" style="padding-left:175px" target="_blank" href="http://stanford.edu/~jpennin">Jeffrey Pennington</a>, &nbsp; <a class="pubauthor" target="_blank" href="http://www.socher.org">Richard Socher</a>, &nbsp; <a class="pubauthor" target="_blank" href="http://nlp.stanford.edu/~manning">Christopher D. Manning </a> </span>
+				</div>
+			
+<div class="heading">
+<p> Introduction </p>				
+</div>
+<div class="entry">
+<p> GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.
+</p>
+</div>
+<div class="heading">
+<p> Getting started (Code download)</p>
+</div>
+<div class="entry">
+<ul style="padding-left:20px; margin-top:0px; margin-bottom:0px">
+<li> Download the latest <a href="https://github.com/stanfordnlp/GloVe">latest code</a> 
+     (licensed under the 
+      <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>).<br>
+     Look for "Clone or download" </li>
+<li> Unpack the files:&nbsp; unzip master.zip </li>
+<li> Compile the source:&nbsp; cd GloVe-master &amp;&amp; make </li>
+<li> Run the demo script: ./demo.sh </li>
+<li> Consult the included README for further usage details, or ask a <a href="#discuss"> question </a></li>
+</ul>
+</div>
+<div class="heading">
+<p> Download pre-trained word vectors </p>
+</div>
+<div class="entry">
+<ul style="padding:0px 0px 0px 20px; margin-top:0px; margin-bottom:0px">
+<li> Pre-trained word vectors. This data is made available under the <a href="http://opendatacommons.org/licenses/pddl/">Public Domain Dedication
+and License</a> v1.0 whose full text can be found at:  
+<a href="http://www.opendatacommons.org/licenses/pddl/1.0/">http://www.opendatacommons.org/licenses/pddl/1.0/</a>.
+<div class="entry">
+<ul style="padding-left:0px; margin-top:0px; margin-bottom:0px">
+  <li> <a href="http://dumps.wikimedia.org/enwiki/20140102/">Wikipedia 2014</a> + <a href="https://catalog.ldc.upenn.edu/LDC2011T07">Gigaword 5</a> (6B tokens, 400K vocab, uncased, 50d, 100d, 200d, &amp; 300d vectors, 822 MB download): <a href="http://nlp.stanford.edu/data/glove.6B.zip">glove.6B.zip</a> </li>
+  <li> Common Crawl (42B tokens, 1.9M vocab, uncased, 300d vectors, 1.75 GB download): <a href="http://nlp.stanford.edu/data/glove.42B.300d.zip">glove.42B.300d.zip</a> </li>
+  <li> Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download): <a href="http://nlp.stanford.edu/data/glove.840B.300d.zip">glove.840B.300d.zip</a> </li>
+  <li> Twitter (2B tweets, 27B tokens, 1.2M vocab, uncased, 25d, 50d, 100d, &amp; 200d vectors, 1.42 GB download): <a href="http://nlp.stanford.edu/data/glove.twitter.27B.zip">glove.twitter.27B.zip</a> </li>
+</ul>
+</div> </li>
+<li> Ruby <a href="preprocess-twitter.rb">script</a> for preprocessing Twitter data
+</ul>
+</div>
+
+<div class="heading">
+<p> Citing GloVe </p>
+</div>
+<div class="entry">
+<p>Jeffrey Pennington, Richard Socher, and Christopher D. Manning. 2014. 
+<a target="_blank" href="/pubs/glove.pdf">GloVe: Global Vectors for Word Representation</a>.  
+[<a target="_blank" href="/pubs/glove.pdf">pdf</a>] [<a href="/pubs/glove.bib">bib</a>]
+</p>
+</div>
+
+
+<div class="heading">
+<p> Highlights </p>
+</div>
+<div class="entry">
+<p style="margin-top:0px; margin-bottom:0px; font-size:13pt">
+  <b>1. &nbsp; Nearest neighbors</b>
+</p>
+<p style="margin-top: 5px; margin-left: 20px"> The Euclidean distance (or cosine similarity) between two word vectors provides an effective method for measuring the linguistic or semantic similarity of the corresponding words. Sometimes, the nearest neighbors according to this metric reveal rare but relevant words that lie outside an average human's vocabulary. For example, here are the closest words to the target word <em>frog</em>: </p>
+</div>
+<div class="entry" style="float:left; width:220px">
+<ol style="padding-left:70px; margin-top:10px; margin-bottom:0px" start='0'>
+<li> <em>frog</em>
+<li> frogs
+<li> toad
+<li> litoria
+<li> leptodactylidae
+<li> rana
+<li> lizard
+<li> eleutherodactylus
+</ol>
+</div>
+<div style="float:left; width:650px">
+<div style="float:left; padding:40px 20px 5px 0px">
+<img src="images/litoria.jpg"/>
+<p style="padding-left:35px; font-size:11pt; color:#555"> 3. litoria </p>
+</div>
+<div style="float:left; padding:40px 20px 5px 0px">
+<img src="images/leptodactylidae.jpg"/>
+<p style="padding-left:8px; font-size:11pt; color:#555"> 4. leptodactylidae </p>
+</div>
+<div style="float:left; padding:40px 20px 5px 0px">
+<img src="images/rana.jpg"/>
+<p style="padding-left:40px; font-size:11pt; color:#555"> 5. rana </p>
+</div>
+<div style="float:left; padding:40px 20px 5px 0px">
+<img src="images/eleutherodactylus.jpg"/>
+<p style="padding-left:3px; font-size:11pt; color:#555"> 7. eleutherodactylus</p>
+</div>
+</div>
+<div class="entry" style="clear:left">
+<br>
+<p style="padding-bottom: 4px; font-size:13pt">
+<b>2. &nbsp; Linear substructures</b>
+<div class="entry" style="padding: 0px 0px 5px 25px; margin-top: 2px">
+<p> The similarity metrics used for nearest neighbor evaluations produce a single scalar that quantifies the relatedness of two words. This simplicity can be problematic since two given words almost always exhibit more intricate relationships than can be captured by a single number. For example, <em>man</em> may be regarded as similar to <em>woman</em> in that both words describe human beings; on the other hand, the two words are often considered opposites since they highlight a primary axis along which humans differ from one another.</p>
+<br>
+<p> In order to capture in a quantitative way the nuance necessary to distinguish <em>man</em> from <em>woman</em>, it is necessary for a model to associate more than a single number to the word pair. A natural and simple candidate for an enlarged set of discriminative numbers is the vector difference between the two word vectors. GloVe is designed in order that such vector differences capture as much as possible the meaning specified by the juxtaposition of two words.</p>
+<br>
+</div>
+<div style="float:left; padding:15px 10px 10px 30px" class="imglink">
+<a href="images/man_woman.jpg" target="_blank"> <img src="images/man_woman_small.jpg" border="1"/> </a>
+<p style="padding-left:60px; font-size:12pt; color:#111"> <a href="images/man_woman.jpg" target="_blank" class="imglink"> man - woman </a></p>
+</div>
+<div style="float:left; padding:15px 10px 10px 10px" class="imglink">
+<a href="images/company_ceo.jpg" target="_blank"> <img src="images/company_ceo_small.jpg" border="1"/> </a>
+<p style="padding-left:55px; font-size:12pt; color:#111"> <a href="images/man_woman.jpg" target="_blank" class="imglink"> company - ceo </a></p>
+</div>
+<div style="float:left; padding:15px 10px 10px 10px" class="imglink">
+<a href="images/city_zip.jpg" target="_blank"> <img src="images/city_zip_small.jpg" border="1"/> </a>
+<p style="padding-left:55px; font-size:12pt; color:#111"> <a href="images/man_woman.jpg" target="_blank" class="imglink"> city - zip code </a></p>
+</div>
+<div style="float:left; padding:15px 20px 10px 10px" class="imglink">
+<a href="images/comparative_superlative.jpg" target="_blank"> <img src="images/comparative_superlative_small.jpg" border="1"/> </a>
+<p style="padding-left:20px; font-size:12pt; color:#111"> <a href="images/comparative_superlative.jpg" target="_blank" class="imglink"> comparative - superlative </a></p>
+</div>
+</div>
+<div class="entry" style="float:left; padding:20px 40px 0px 65px">
+<p>
+The underlying concept that distinguishes <em>man</em> from <em>woman</em>, i.e. sex or gender, may be equivalently specified by various other word pairs, such as <em>king</em> and <em>queen</em> or <em>brother</em> and <em>sister</em>. To state this observation mathematically, we might expect that the vector differences <em>man</em> - <em>woman</em>, <em>king</em> - <em>queen</em>, and <em>brother</em> - <em>sister</em> might all be roughly equal. This property and other interesting patterns can be observed in the above set of visualizations.
+</p>
+</div>
+<div class="heading" style="clear:left">
+<p> Training </p>
+</div>
+<div class="entry">
+<p> The GloVe model is trained on the non-zero entries of a global word-word co-occurrence matrix, which tabulates how frequently words co-occur with one another in a given corpus. Populating this matrix requires a single pass through the entire corpus to collect the statistics. For large corpora, this pass can be computationally expensive, but it is a one-time up-front cost. Subsequent training iterations are much faster because the number of non-zero matrix entries is typically much smaller than the total number of words in the corpus.
+</p>
+<br>
+<p> The tools provided in this package automate the collection and preparation of co-occurrence statistics for input into the model. The core training code is separated from these preprocessing steps and can be executed independently.
+</p>
+</div>
+<div class="heading">
+<p> Model Overview </p>
+</div>
+<div class="entry">
+<p> GloVe is essentially a log-bilinear model with a weighted least-squares objective. The main intuition underlying the model is the simple observation that ratios of word-word co-occurrence probabilities have the potential for encoding some form of meaning. For example, consider the co-occurrence probabilities for target words <em>ice</em> and <em>steam</em> with various probe words from the vocabulary. Here are some actual probabilities from a 6 billion word corpus:
+</p>
+<br>
+<img src="images/table.png" style="padding-left:80px"/>
+<br>
+<br>
+<p>
+As one might expect, <em>ice</em> co-occurs more frequently with <em>solid</em> than it does with <em>gas</em>, whereas <em>steam</em> co-occurs more frequently with <em>gas</em> than it does with <em>solid</em>. Both words co-occur with their shared property <em>water</em> frequently, and both co-occur with the unrelated word <em>fashion</em> infrequently. Only in the ratio of probabilities does noise from non-discriminative words like <em>water</em> and <em>fashion</em>
+cancel out, so that large values (much greater than 1) correlate well with properties specific to ice, and small values (much less than 1) correlate well with properties specific of steam. In this way, the ratio of probabilities encodes some crude form of meaning associated with the abstract concept of thermodynamic phase.
+<br>
+<br>
+The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words' probability of co-occurrence. Owing to the fact that the logarithm of a ratio equals the difference of logarithms, this objective associates (the logarithm of) ratios of co-occurrence probabilities with vector differences in the word vector space. Because these ratios can encode some form of meaning, this information gets encoded as vector differences as well. For this reason, the resulting word vectors perform very well on word analogy tasks, such as those examined in the <a href="http://code.google.com/p/word2vec/"> word2vec </a> package.
+</p>
+</div>
+<div class="heading" style="clear:left">
+
+<p> Visualization </p>
+</div>
+<div class="entry">
+<p> GloVe produces word vectors with a marked banded structure that is evident upon visualization: </p>
+<br>
+<div style="padding-left:15px">
+<a href="images/word_vectors.jpg" target="_blank"> <img src="images/word_vectors_small.jpg"/> </a>
+</div>
+<br>
+<br>
+<p>The horizontal bands result from the fact that the multiplicative interactions in the model occur component-wise. While there are additive interactions resulting from a dot product, in general there is little room for the individual dimensions to cross-pollinate.</p>
+<br>
+<p>The horizontal bands become more pronounced as the word frequency increases. Indeed, there are noticeable long-range trends as a function of word frequency, and they are unlikely to have a linguistic origin. This feature is not unique to GloVe -- in fact, I'm unaware of any model for word vector learning that avoids this issue.
+</p>
+<br>
+<p> The vertical bands, such as the one around word 230k-233k, are due to local densities of related words (usually numbers) that happen to have similar frequencies. </p>
+</div>
+
+<div class="heading">
+<p> Release history </p>
+</div>
+<div class="entry">
+<ul style="padding-left:20px; margin-top:0px; margin-bottom:0px">
+<li> <a href="/software/GloVe-1.2.zip">GloVe v.1.2</a>: Minor bug
+  fixes in code (memory, off-by-one, errors). Eval code now also
+  available in Python and Octave. UTF-8 encoding of largest data file
+  fixed. Prepared by Russell Stewart and Christopher Manning. Oct 2015. </li>
+<li> <a href="/software/GloVe-1.0.tar.gz">GloVe v.1.0</a>: Original
+  release. Prepared by Jeffrey Pennington. Aug 2014. </li>
+</ul>
+</div>
+
+<div id="discuss" class="heading" style="clear:left">
+<p> Bugs/Issues/Discussion </p>
+</div>
+<div class="entry">
+<p><b>GitHub</b>: GloVe is <a href="https://github.com/stanfordnlp/GloVe">on
+    GitHub</a>. For bug reports and patches, you're best off using the
+    GitHub Issues and Pull requests features.</p>
+
+<p><b>Google Group</b>: The Google Group
+    <a href="https://groups.google.com/forum/#!forum/globalvectors">globalvectors</a>
+    can be used for questions and general discussion on GloVe.</p>
+
+<!-- 
+<p>  Other questions can be
+    sent to the Google Group below. </p>
+</div>
+<div style="padding-left:50px">
+<iframe id="forum_embed"
+  src="javascript:void(0)"
+  scrolling="no"
+  frameborder="0"
+  width="900"
+  height="700">
+</iframe>
+<script type="text/javascript">
+  document.getElementById('forum_embed').src =
+     'https://groups.google.com/forum/embed/?place=forum/globalvectors'
+     + '&showsearch=true&showpopout=true&showtabs=false'
+     + '&parenturl=' + encodeURIComponent(window.location.href);
+</script>
+-->
+<br>
+</div>
+
+<div class="hbar"> </div>
+
+	<div class="footerSection content">
+		<p>Jeffrey Pennington 
+			<a href="http://www.linkedin.com/in/jpennin" target="_blank"><i class="fa fa-linkedin-square"></i></a> |
+			<a href="https://www.facebook.com/jeffrey.s.pennington" target="_blank"><i class="fa fa-facebook-square"></i></a> August 2014
+                </p>
+		<p>Site design courtesy of <a href="http://jason.chuang.info/" target="_blank">Jason Chuang</a></p>
+	</div>
+
+<!-- close outer blocks; there are 3 open div's -->
+</div>
+</div>
+</div>
+</body>
+</html>
